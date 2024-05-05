@@ -11,13 +11,21 @@ function(load_google_test)
 endfunction()
 
 function(load_abseil)
+  cmake_parse_arguments(ARG "" "GIT_TAG" "" ${ARGN})
   include(FetchContent)
 
-  FetchContent_Declare(
-    abseil
-    GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
-    GIT_TAG 20240116.2
-  )
+  if(ARG_GIT_TAG)
+    FetchContent_Declare(
+      abseil
+      GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
+      GIT_TAG ${ARG_GIT_TAG}
+    )
+  else()
+    FetchContent_Declare(
+      abseil
+      GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
+    )
+  endif()
   FetchContent_MakeAvailable(abseil)
   add_definitions(
     -DABSL_BUILD_TESTING=ON
