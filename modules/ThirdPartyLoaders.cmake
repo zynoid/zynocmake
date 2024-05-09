@@ -9,26 +9,44 @@ function(load_google_test)
   FetchContent_MakeAvailable(googletest)
 endfunction()
 
-function(load_abseil)
+function(load_library_from_git NAME REPO_URL)
   cmake_parse_arguments(ARG "" "GIT_TAG" "" ${ARGN})
   include(FetchContent)
 
   if(ARG_GIT_TAG)
     FetchContent_Declare(
-      abseil
-      GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
+      ${NAME}
+      GIT_REPOSITORY ${REPO_URL}
       GIT_TAG ${ARG_GIT_TAG}
     )
   else()
     FetchContent_Declare(
-      abseil
-      GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
+      ${NAME}
+      GIT_REPOSITORY ${REPO_URL}
     )
   endif()
-  FetchContent_MakeAvailable(abseil)
+  FetchContent_MakeAvailable(${NAME})
+endfunction()
+
+function(load_abseil)
+  cmake_parse_arguments(ARG "" "GIT_TAG" "" ${ARGN})
+  load_library_from_git(
+    abseil
+    https://github.com/abseil/abseil-cpp.git
+    GIT_TAG ${ARG_GIT_TAG}
+  )
   add_definitions(
     -DABSL_BUILD_TESTING=ON
     -DABSL_USE_GOOGLETEST_HEAD=ON
     -DABSL_PROPAGATE_CXX_STD=ON
+  )
+endfunction()
+
+function(load_google_benchmark)
+  cmake_parse_arguments(ARG "" "GIT_TAG" "" ${ARGN})
+  load_library_from_git(
+    google_benchmark
+    https://github.com/google/benchmark.git
+    GIT_TAG ${ARG_GIT_TAG}
   )
 endfunction()
