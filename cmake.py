@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from argparse import ArgumentParser
 from typing import Optional, Callable
 import os
@@ -46,17 +47,17 @@ if __name__ == "__main__":
     sub_parsers = parser.add_subparsers()
 
     build_parser = sub_parsers.add_parser('build', help="编译")
-    build_parser.add_argument('-t', '--target', help="build target", required=False, type=str)
+    build_parser.add_argument('target', help="build target", type=str, default=None, nargs="?")
     build_parser.set_defaults(handle=build)
 
     test_parser = sub_parsers.add_parser('test', help="测试")
-    test_parser.add_argument('-t', '--target', help="test target", required=False, type=str)
+    test_parser.add_argument('target', help="test target", type=str, default=None, nargs="?")
     test_parser.add_argument(
         '-b', '--build', help="need rebuild", required=False, action="store_true", dest="need_build")
     test_parser.set_defaults(handle=test)
 
     run_parser = sub_parsers.add_parser('run', help="运行")
-    run_parser.add_argument('-t', '--target', help="run target", required=True, type=str)
+    run_parser.add_argument('target', help="run target", type=str)
     run_parser.add_argument(
         '-b', '--build', help="need rebuild", required=False, action="store_true", dest="need_build")
     run_parser.set_defaults(handle=run)
