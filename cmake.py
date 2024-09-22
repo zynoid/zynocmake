@@ -1,7 +1,7 @@
 from argparse import ArgumentParser
 from typing import Optional, Callable
 import os
-os.chdir(f"{os.path.dirname(__file__)}/..")
+# os.chdir(f"{os.path.dirname(__file__)}/..")
 
 class Args:
     handle: Callable[["Args"], None]
