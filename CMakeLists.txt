@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 3.14)
+project(__PROJECT_NAME__)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS True)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/modules)
+set(ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+set(BIN_DIR "${ROOT_DIR}/bin")
+set(LIB_DIR "${ROOT_DIR}/lib")
+set(EXECUTABLE_OUTPUT_PATH ${BIN_DIR})
+link_directories(${LIB_DIR})
+enable_testing()
+
+include(BrazelCMake)
+include(ThirdPartyLoaders)
+
+load_google_test()
+# load_abseil(GIT_TAG 20240116.2)
+# load_google_benchmark(GIT_TAG v1.8.3)
+
+# add_subdirectory(src)
+# add_subdirectory(test)
