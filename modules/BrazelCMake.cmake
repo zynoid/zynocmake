@@ -1,3 +1,15 @@
+# 静态库声明
+# cc_library(
+#   name
+#   STATIC/SHARED/INTERFACE
+#   NS namespace  # 库名为 namespace::name
+#   SRCS
+#     source_files...
+#   DEPS
+#     deps...
+#   INCLUDE_DIRS
+#     header_dirs...
+# )
 function(cc_library NAME)
   set(options STATIC SHARED INTERFACE)
   set(oneValueArgs NS)
@@ -5,7 +17,7 @@ function(cc_library NAME)
   cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
   if(ARG_NS)
     set(ORI_NAME ${NAME})
-    string(REPLACE "::" "_" NS_PREFIX "${ARG_NS}")
+    string(REPLACE "::" "__" NS_PREFIX "${ARG_NS}")
     set(NAME ${NS_PREFIX}__${NAME})
   endif()
 
@@ -37,10 +49,12 @@ function(cc_library NAME)
     target_include_directories(${NAME} PUBLIC ${ARG_INCLUDE_DIRS})
   endif()
   if(ARG_NS)
+    # 库文件名 ns1__ns2__name, 库别名 ns1::ns2::name
     add_library(${ARG_NS}::${ORI_NAME} ALIAS ${NAME})
   endif()
 endfunction()
 
+# 二进制可运行文件声明
 function(cc_binary NAME)
   set(oneValueArgs "")
   set(multiValueArgs SRCS DEPS)
@@ -54,6 +68,16 @@ function(cc_binary NAME)
   endif()
 endfunction()
 
+# 测试程序声明
+# cc_test(
+#   name
+#   [GTEST]  # 是否为 gtest 测试
+#   NS namespace  # 测试名为 namespace.name
+#   SRCS
+#     ...
+#   DEPS
+#     ...
+# )
 function(cc_test NAME)
   set(options GTEST)
   set(oneValueArgs NS)
