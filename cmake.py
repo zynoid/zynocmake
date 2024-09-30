@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from argparse import ArgumentParser
-from typing import Optional, Callable
+from typing import Optional, Callable, List
 import os
 # os.chdir(f"{os.path.dirname(__file__)}/..")
 
@@ -8,6 +8,7 @@ class Args:
     handle: Callable[["Args"], None]
     target: Optional[str]
     need_build: bool = False
+    run_args: List[str]
 
 def build(args: Args):
     if args.target:
@@ -40,7 +41,8 @@ def run(args: Args):
     if args.need_build:
         build(args)
     print("==================== run =====================")
-    os.system(f"./bin/{args.target}")
+    run_args = " ".join(args.run_args)
+    os.system(f"./bin/{args.target} {run_args}")
 
 if __name__ == "__main__":
     parser = ArgumentParser(prog='cmake')
@@ -60,8 +62,9 @@ if __name__ == "__main__":
     run_parser.add_argument('target', help="run target", type=str)
     run_parser.add_argument(
         '-b', '--build', help="need rebuild", required=False, action="store_true", dest="need_build")
+
     run_parser.set_defaults(handle=run)
 
     args = Args()
-    parser.parse_args(namespace=args)
+    _, args.run_args = parser.parse_known_args(namespace=args)
     args.handle(args)
