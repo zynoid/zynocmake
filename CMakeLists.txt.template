@@ -15,7 +15,7 @@ enable_testing()
 include(BrazelCMake)
 include(ThirdPartyLoaders)
 
-load_google_test()
+# load_google_test()
 # load_abseil(GIT_TAG 20240116.2)
 # load_google_benchmark(GIT_TAG v1.8.3)
 
