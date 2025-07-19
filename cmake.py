@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 from argparse import ArgumentParser
 from typing import Optional, Callable, List
 import os
